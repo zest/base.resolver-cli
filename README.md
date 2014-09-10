@@ -8,9 +8,9 @@
 [![License][license-image]][license-link]
 
 
-# soul-infra / base.resolver-cli-cli
+# soul-infra / base.resolver-cli
 
-> The `base.resolver-cli-cli` is a command line wrapper around base.resolver-cli
+> The `base.resolver-cli` is a command line wrapper around `base.resolver`
 
 
 [dependencies-image]: http://img.shields.io/david/soul-infra/base.resolver-cli.svg?style=flat-square
