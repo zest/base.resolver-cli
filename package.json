@@ -48,24 +48,11 @@
         "grunt-contrib-watch": "0.6.1",
         "grunt-contrib-jshint": "0.10.0",
         "ink-docstrap": "0.4.12",
-        "grunt-jsdoc": "0.5.7",
-        "grunt-mocha-cov": "0.3.0",
-        "mocha-term-cov-reporter": "0.2.0",
-        "chai": "1.9.1",
-        "sinon": "1.10.3",
-        "sinon-chai": "2.5.0",
-        "chai-as-promised": "4.1.1",
-        "merge": "1.2.0"
+        "grunt-jsdoc": "0.5.7"
     },
     "directories": {
         "lib": "lib",
         "doc": "doc",
-        "test": "test",
         "out": ".out"
-    },
-    "config": {
-        "blanket": {
-            "pattern": "//^(?!.*/node_modules/).*/lib/"
-        }
     }
 }

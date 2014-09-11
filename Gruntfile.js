@@ -1,5 +1,3 @@
-// merge is for merging jshint options
-var merge = require('merge');
 module.exports = function (grunt) {
     'use strict';
     // global variables are defined here
@@ -7,11 +5,6 @@ module.exports = function (grunt) {
             lib: [
                 '<%= pkg.directories.lib %>/**/*.js',
                 '<%= pkg.directories.lib %>/**/*.json'
-            ],
-            test: [
-                '<%= pkg.directories.test %>/**/*.js',
-                '<%= pkg.directories.test %>/**/*.json',
-                '!**/node_modules/**'
             ],
             build: [
                 'Gruntfile.js',
@@ -25,15 +18,6 @@ module.exports = function (grunt) {
                 './README.md'
             ]
         ),
-    // mocha globals
-        mochaGlobals = [
-            'describe',
-            'it',
-            'beforeEach',
-            'afterEach',
-            'before',
-            'after'
-        ],
     // js-hint default options
         jshintOptions = {
             maxerr: 1000, // {int} Maximum error before stopping
@@ -71,52 +55,12 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     // ...for generating jsdoc documentation
     grunt.loadNpmTasks('grunt-jsdoc');
-    // ...for running node mocha tests and code coverage reports
-    grunt.loadNpmTasks('grunt-mocha-cov');
     // Project configuration.
     grunt.initConfig({
         // read the package.json for use
         pkg: grunt.file.readJSON('package.json'),
-        // mocha and coverage configuration
-        mochacov: {
-            options: {
-                // set test-case timeout in milliseconds [2000]
-                timeout: 50000,
-                // check for global variable leaks.
-                'check-leaks': true,
-                // specify user-interface (bdd|tdd|exports).
-                ui: 'bdd',
-                // "slow" test threshold in milliseconds [75].
-                slow: 10,
-                files: [
-                    '<%= pkg.directories.test %>/**/*.js',
-                    '!**/node_modules/**'
-                ]
-            },
-            // default test option
-            test: {
-                options: {
-                    reporter: 'spec'
-                }
-            },
-            coverageTerm: {
-                options: {
-                    reporter: 'mocha-term-cov-reporter',
-                    coverage: true
-                }
-            },
-            // for sending coverage report to coveralls
-            coverage: {
-                options: {
-                    coveralls: true
-                }
-            }
-        },
         // clean configuration
         clean: {
-            out: [
-                '<%= pkg.directories.out %>'
-            ],
             doc: [
                 '<%= pkg.directories.doc %>/**/*',
                 '!<%= pkg.directories.doc %>/jsdoc.json'
@@ -129,13 +73,6 @@ module.exports = function (grunt) {
                 files: files.lib,
                 tasks: [
                     'lib-queue'
-                ]
-            },
-            // watch for specification changes
-            test: {
-                files: files.test,
-                tasks: [
-                    'test-queue'
                 ]
             },
             build: {
@@ -154,13 +91,6 @@ module.exports = function (grunt) {
                 options: jshintOptions
             },
             // validation for all server javascript specifications
-            test: {
-                src: files.test,
-                options: merge({
-                    predef: mochaGlobals
-                }, jshintOptions)
-            },
-            // validation for all server javascript specifications
             build: {
                 src: files.build,
                 options: jshintOptions
@@ -176,10 +106,6 @@ module.exports = function (grunt) {
                     template: './node_modules/ink-docstrap/template'
                 }
             }
-        },
-        exec: {
-            coverage: 'cat "<%= pkg.directories.out %>/coverage/reports/lcov/lcov.info" ' +
-                '| "./node_modules/coveralls/bin/coveralls.js"'
         }
     });
     // for faster builds we make sure that only the changed files are validated
@@ -213,20 +139,13 @@ module.exports = function (grunt) {
     grunt.registerTask('cleanup', [
         'clean:out'
     ]);
-    // coverage script
-    grunt.registerTask('coverage', [
-        'mochacov:coverage'
-    ]);
     // init script
     grunt.registerTask('init', [
     ]);
     // test script
     grunt.registerTask('test', [
         'jshint:lib',
-        'jshint:test',
-        'jshint:build',
-        'mochacov:test',
-        'mochacov:coverageTerm'
+        'jshint:build'
     ]);
     // document script
     grunt.registerTask('document', [
@@ -237,14 +156,7 @@ module.exports = function (grunt) {
     // tasks to run when files change
     grunt.registerTask('lib-queue', [
         'jshint:lib',
-        'mochacov:test',
-        'mochacov:coverageTerm',
         'document'
-    ]);
-    grunt.registerTask('test-queue', [
-        'jshint:test',
-        'mochacov:test',
-        'mochacov:coverageTerm'
     ]);
     grunt.registerTask('build-queue', [
         'jshint:build'
