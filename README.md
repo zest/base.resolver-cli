@@ -49,7 +49,7 @@ Once the cli is installed, you can run it by typing `resolver` on the console.
 
 
 For more information about installing and configuring base.resolver, please see the
-[base.resolver](https://github.com/zest/base.resolver/blob/master/README.md) documentation.
+[base.resolver](http://zest.github.io/base.resolver/) documentation.
    
 
 [dependencies-image]: http://img.shields.io/david/zest/base.resolver-cli.svg?style=flat-square
